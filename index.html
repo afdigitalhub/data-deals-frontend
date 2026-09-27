@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Data Deals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<style>
+  :root {
+    --bg: #FFFFFF; --bg-soft: #F8F8F6; --yellow: #F5B400; --blue: #2E6BE6; --blue-soft: #EAF0FE;
+    --text: #14140F; --text-dim: #6B6B66; --border: #E7E5DD;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 20px; }
+  header { display: flex; align-items: center; gap: 9px; padding-bottom: 20px; border-bottom: 0.5px solid var(--border); margin-bottom: 20px; }
+  .logo { width: 32px; height: 32px; border-radius: 9px; background: var(--text); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; color: var(--yellow); }
+  .brand-name { font-size: 16px; font-weight: 600; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .sub { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
+  .qb-card { background: var(--bg-soft); border: 0.5px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 20px; }
+  .qb-nets { display: flex; gap: 8px; margin-bottom: 12px; }
+  .qb-net { flex: 1; border-radius: 12px; padding: 11px 4px; text-align: center; border: 1.5px solid var(--border); background: #fff; cursor: pointer; }
+  .qb-net.active { background: var(--text); border-color: var(--text); }
+  .qb-net-dot { width: 22px; height: 22px; border-radius: 50%; margin: 0 auto 6px; }
+  .qb-net p { font-size: 11px; font-weight: 700; color: var(--text); }
+  .qb-net.active p { color: #fff; }
+  .qb-bundles { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .qb-bundle { display: flex; justify-content: space-between; border-radius: 11px; padding: 12px 14px; border: 1.5px solid var(--border); background: #fff; cursor: pointer; }
+  .qb-bundle.active { background: #FFF8E8; border-color: var(--yellow); }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-dim); margin-bottom: 6px; }
+  .field input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: #fff; font-size: 15px; font-family: inherit; }
+  .qb-buy { width: 100%; padding: 14px; border-radius: 11px; border: none; background: var(--yellow); color: var(--text); font-weight: 700; font-size: 15px; cursor: pointer; }
+  .qb-buy:disabled { opacity: 0.5; }
+  .status { text-align: center; font-size: 13px; color: var(--text-dim); margin-top: 12px; }
+  .status.success { color: #2E8B4F; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">D</div>
+    <span class="brand-name">Data Deals</span>
+  </header>
+  <h1>Never run out of data again</h1>
+  <p class="sub">Pick your network, pick a bundle, pay — your data lands in minutes.</p>
+  <div class="qb-card">
+    <div class="qb-nets" id="netRow"></div>
+    <div class="qb-bundles" id="bundleList"><p style="font-size:13px;color:var(--text-dim)">Loading bundles...</p></div>
+    <div class="field">
+      <label>Your phone number (for payment receipt)</label>
+      <input type="tel" id="customerPhone" placeholder="024 000 0000">
+    </div>
+    <div class="field">
+      <label>Number to receive the data</label>
+      <input type="tel" id="recipientPhone" placeholder="024 000 0000">
+    </div>
+    <button class="qb-buy" id="payBtn" disabled>Select a bundle</button>
+    <p class="status" id="statusMsg"></p>
+  </div>
+</div>
+<script>
+  const API = 'https://data-deals-backend.onrender.com';
+  const PAYSTACK_KEY = 'pk_live_d0c432c38f2b6df43bff7c329202633502c992c3';
+  let services = [];
+  let selectedNetwork = null;
+  let selectedService = null;
+  const netColors = { MTN: '#F5B400', AirtelTigo: '#2E6BE6', Telecel: '#3FA65A' };
+  async function loadServices() {
+    try {
+      const res = await fetch(API + '/api/services?category=data');
+      services = await res.json();
+      renderNetworks();
+    } catch (e) {
+      document.getElementById('bundleList').innerHTML = '<p style="color:#c0392b;font-size:13px">Could not load bundles. Refresh the page.</p>';
+    }
+  }
+  function renderNetworks() {
+    const networks = [...new Set(services.map(s => s.network))];
+    const row = document.getElementById('netRow');
+    row.innerHTML = '';
+    networks.forEach(net => {
+      const el = document.createElement('div');
+      el.className = 'qb-net';
+      el.innerHTML = `<div class="qb-net-dot" style="background:${netColors[net] || '#999'}"></div><p>${net}</p>`;
+      el.onclick = () => { selectedNetwork = net; selectedService = null; renderNetworks(); renderBundles(); updateBtn(); };
+      if (selectedNetwork === net) el.classList.add('active');
+      row.appendChild(el);
+    });
+    if (!selectedNetwork && networks.length) { selectedNetwork = networks[0]; renderNetworks(); }
+    renderBundles();
+  }
+  function renderBundles() {
+    const list = document.getElementById('bundleList');
+    list.innerHTML = '';
+    services.filter(s => s.network === selectedNetwork).forEach(s => {
+      const el = document.createElement('div');
+      el.className = 'qb-bundle';
+      el.innerHTML = `<span>${s.name}</span><strong>GHS ${s.price}</strong>`;
+      el.onclick = () => { selectedService = s; renderBundles(); updateBtn(); };
+      if (selectedService && selectedService.id === s.id) el.classList.add('active');
+      list.appendChild(el);
+    });
+  }
+  function updateBtn() {
+    const btn = document.getElementById('payBtn');
+    btn.disabled = !selectedService;
+    btn.textContent = selectedService ? `Pay GHS ${selectedService.price}` : 'Select a bundle';
+  }
+  document.getElementById('payBtn').addEventListener('click', async () => {
+    const customerPhone = document.getElementById('customerPhone').value.trim();
+    const recipientPhone = document.getElementById('recipientPhone').value.trim();
+    const statusEl = document.getElementById('statusMsg');
+    if (!/^0\d{9}$/.test(customerPhone) || !/^0\d{9}$/.test(recipientPhone)) {
+      statusEl.textContent = 'Enter valid 10-digit phone numbers.';
+      statusEl.className = 'status';
+      return;
+    }
+    statusEl.textContent = 'Creating your order...';
+    try {
+      const orderRes = await fetch(API + '/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer_phone: customerPhone,
+          service_id: selectedService.id,
+          recipient_phone: recipientPhone
+        })
+      });
+      const orderData = await orderRes.json();
+      if (!orderRes.ok) throw new Error(orderData.error || 'Order failed');
+      const handler = PaystackPop.setup({
+        key: PAYSTACK_KEY,
+        email: customerPhone + '@dataDeals.customer',
+        amount: Math.round(orderData.amount * 100),
+        ref: orderData.reference,
+        currency: 'GHS',
+        callback: function(response) {
+          statusEl.textContent = 'Payment received! Your data is on the way.';
+          statusEl.className = 'status success';
+        },
+        onClose: function() {
+          statusEl.textContent = 'Payment window closed.';
+          statusEl.className = 'status';
+        }
+      });
+      handler.openIframe();
+      statusEl.textContent = '';
+    } catch (e) {
+      statusEl.textContent = 'Something went wrong: ' + e.message;
+      statusEl.className = 'status';
+    }
+  });
+  loadServices();
+</script>
+</body>
+  </html>
