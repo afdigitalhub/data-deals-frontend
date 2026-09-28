@@ -1,134 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Data Deals — Admin</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root { --bg:#FFFFFF; --bg-soft:#F8F8F6; --yellow:#F5B400; --blue:#2E6BE6; --text:#14140F; --text-dim:#6B6B66; --border:#E7E5DD; --green:#2E8B4F; --red:#C0392B; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
-  .wrap { max-width: 600px; margin: 0 auto; padding: 20px; }
-  h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-  .sub { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
-  #loginBox { max-width: 320px; margin: 60px auto; text-align: center; }
-  #loginBox input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 10px; font-size: 15px; }
-  #loginBox button { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--text); color: var(--yellow); font-weight: 700; cursor: pointer; }
-  #dashboard { display: none; }
-  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
-  .stat-card { background: var(--bg-soft); border: 0.5px solid var(--border); border-radius: 14px; padding: 14px; }
-  .stat-card .label { font-size: 11px; color: var(--text-dim); font-weight: 600; text-transform: uppercase; margin-bottom: 6px; }
-  .stat-card .value { font-size: 20px; font-weight: 700; }
-  .section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--text-dim); margin: 24px 0 10px; letter-spacing: 0.04em; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th { text-align: left; padding: 8px 6px; color: var(--text-dim); font-weight: 600; border-bottom: 1px solid var(--border); }
-  td { padding: 8px 6px; border-bottom: 1px solid var(--border); }
-  .badge { padding: 3px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
-  .badge.pending { background: #FFF3D6; color: #A66A00; }
-  .badge.paid { background: #E8F5EC; color: var(--green); }
-  .badge.fulfilled { background: #EAF0FE; color: var(--blue); }
-  .fulfill-btn { background: var(--yellow); border: none; padding: 5px 10px; border-radius: 7px; font-size: 11px; font-weight: 700; cursor: pointer; }
-  .refresh-btn { background: var(--text); color: var(--yellow); border: none; padding: 8px 14px; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; margin-bottom: 10px; }
-  .empty { color: var(--text-dim); font-size: 13px; padding: 20px 0; text-align: center; }
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Deals has moved</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://data-deals-backend.onrender.com/">
+<meta http-equiv="refresh" content="0; url=https://data-deals-backend.onrender.com/admin">
+<script>location.replace('https://data-deals-backend.onrender.com' + (location.pathname.indexOf('admin') >= 0 ? '/admin' : '/') + location.search);</script>
+<style>body{font-family:system-ui,sans-serif;background:#FFD400;color:#101114;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;text-align:center;padding:24px}a{color:#101114;font-weight:700}</style>
 </head>
-<body>
-<div class="wrap">
-  <div id="loginBox">
-    <h1>Data Deals Admin</h1>
-    <p class="sub">Enter your admin key to continue</p>
-    <input type="password" id="adminKeyInput" placeholder="Admin key">
-    <button onclick="login()">Enter</button>
-    <p class="sub" id="loginError" style="color:var(--red)"></p>
-  </div>
-  <div id="dashboard">
-    <h1>Data Deals Admin</h1>
-    <p class="sub">Live overview — Adonle & Ben</p>
-    <div class="stats-grid" id="statsGrid">
-      <div class="stat-card"><div class="label">Available Balance</div><div class="value" id="statBalance">—</div></div>
-      <div class="stat-card"><div class="label">This Month</div><div class="value" id="statMonth">—</div></div>
-      <div class="stat-card"><div class="label">Total Orders</div><div class="value" id="statOrders">—</div></div>
-      <div class="stat-card"><div class="label">Awaiting Fulfillment</div><div class="value" id="statPending">—</div></div>
-    </div>
-    <div class="section-title">Recent Orders</div>
-    <button class="refresh-btn" onclick="loadOrders()">Refresh</button>
-    <table>
-      <thead><tr><th>Phone</th><th>Service</th><th>Amount</th><th>Status</th><th></th></tr></thead>
-      <tbody id="ordersBody"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
-    </table>
-    <div class="section-title">Agents</div>
-    <table>
-      <thead><tr><th>Name</th><th>Code</th><th>Wallet</th></tr></thead>
-      <tbody id="agentsBody"><tr><td colspan="3" class="empty">Loading...</td></tr></tbody>
-    </table>
-  </div>
-</div>
-<script>
-  const API = 'https://data-deals-backend.onrender.com';
-  let adminKey = '';
-  function login() {
-    adminKey = document.getElementById('adminKeyInput').value.trim();
-    if (!adminKey) return;
-    fetch(API + '/api/admin/orders', { headers: { 'x-admin-key': adminKey } })
-      .then(r => {
-        if (!r.ok) throw new Error('Wrong key');
-        document.getElementById('loginBox').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
-        sessionStorage.setItem('dd_admin_key', adminKey);
-        loadStats(); loadOrders(); loadAgents();
-      })
-      .catch(() => { document.getElementById('loginError').textContent = 'Incorrect admin key'; });
-  }
-  function money(n) { return 'GHS ' + Number(n).toFixed(2); }
-  function loadStats() {
-    fetch(API + '/api/admin/stats', { headers: { 'x-admin-key': adminKey } })
-      .then(r => r.json())
-      .then(d => {
-        document.getElementById('statBalance').textContent = money(d.available_balance || 0);
-        document.getElementById('statMonth').textContent = money(d.this_month_revenue || 0);
-        document.getElementById('statOrders').textContent = d.total_orders || 0;
-        document.getElementById('statPending').textContent = d.pending_fulfillment || 0;
-      })
-      .catch(() => {});
-  }
-  function loadOrders() {
-    fetch(API + '/api/admin/orders', { headers: { 'x-admin-key': adminKey } })
-      .then(r => r.json())
-      .then(orders => {
-        const body = document.getElementById('ordersBody');
-        if (!orders.length) { body.innerHTML = '<tr><td colspan="5" class="empty">No orders yet</td></tr>'; return; }
-        body.innerHTML = orders.map(o => `
-          <tr>
-            <td>${o.customer_phone}</td>
-            <td>${o.network || ''} ${o.service_name}</td>
-            <td>${money(o.amount)}</td>
-            <td><span class="badge ${o.status}">${o.status}</span></td>
-            <td>${o.status === 'paid' ? `<button class="fulfill-btn" onclick="fulfill(${o.id})">Mark sent</button>` : ''}</td>
-          </tr>
-        `).join('');
-      })
-      .catch(() => {});
-  }
-  function fulfill(id) {
-    fetch(API + '/api/admin/orders/' + id + '/fulfill', { method: 'POST', headers: { 'x-admin-key': adminKey } })
-      .then(() => { loadOrders(); loadStats(); });
-  }
-  function loadAgents() {
-    fetch(API + '/api/admin/agents', { headers: { 'x-admin-key': adminKey } })
-      .then(r => r.json())
-      .then(agents => {
-        const body = document.getElementById('agentsBody');
-        if (!agents.length) { body.innerHTML = '<tr><td colspan="3" class="empty">No agents yet</td></tr>'; return; }
-        body.innerHTML = agents.map(a => `
-          <tr><td>${a.name}</td><td>${a.referral_code}</td><td>${money(a.wallet_balance)}</td></tr>
-        `).join('');
-      })
-      .catch(() => {});
-  }
-  const savedKey = sessionStorage.getItem('dd_admin_key');
-  if (savedKey) { document.getElementById('adminKeyInput').value = savedKey; login(); }
-</script>
-</body>
-  </html>
+<body><p>Data Deals has a new home.<br><a href="https://data-deals-backend.onrender.com/">Continue to Data Deals →</a></p></body>
+</html>
