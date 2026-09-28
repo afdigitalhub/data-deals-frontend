@@ -38,6 +38,8 @@
   .qb-buy:disabled { opacity: 0.5; }
   .status { text-align: center; font-size: 13px; color: var(--text-dim); margin-top: 12px; }
   .status.success { color: #2E8B4F; font-weight: 600; }
+  .admin-link { text-align: center; margin-top: 30px; }
+  .admin-link a { font-size: 10px; color: #ccc; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -62,6 +64,7 @@
     <button class="qb-buy" id="payBtn" disabled>Select a bundle</button>
     <p class="status" id="statusMsg"></p>
   </div>
+  <p class="admin-link"><a href="admin.html">·</a></p>
 </div>
 <script>
   const API = 'https://data-deals-backend.onrender.com';
