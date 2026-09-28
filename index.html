@@ -9,201 +9,190 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <style>
-  :root { --bg:#FFFFFF; --soft:#F8F8F6; --yellow:#F5B400; --blue:#2E6BE6; --blue-soft:#EAF0FE; --text:#14140F; --dim:#6B6B66; --border:#E7E5DD; --green:#2E8B4F; }
+  :root { --bg:#FFFFFF; --soft:#F8F8F6; --yellow:#F5B400; --ink:#14140F; --dim:#6B6B66; --border:#E7E5DD; --gold-text:#B58200; --gold-bg:#FBF3DC; --card:#14140F; --card2:#26261F; --card-line:#3A3A32; --card-dim:#A5A59C; --green:#2E8B4F; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
-  .wrap { max-width: 480px; margin: 0 auto; padding: 0 20px; }
-  header { position: sticky; top: 0; background: rgba(255,255,255,0.94); backdrop-filter: blur(8px); border-bottom: 0.5px solid var(--border); padding: 14px 0; z-index: 10; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 0 18px; }
+  header { padding: 16px 0 6px; }
   .brand { display: flex; align-items: center; gap: 9px; }
-  .logo { width: 32px; height: 32px; border-radius: 9px; background: var(--text); color: var(--yellow); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; }
-  .brand-name { font-size: 16px; font-weight: 600; }
-  .hero { padding: 24px 0 8px; }
-  .eyebrow { display: inline-block; font-size: 11px; font-weight: 600; color: var(--blue); background: var(--blue-soft); padding: 5px 11px; border-radius: 999px; margin-bottom: 14px; }
-  h1 { font-size: 24px; font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; margin-bottom: 10px; }
-  .sub { font-size: 14px; color: var(--dim); line-height: 1.6; margin-bottom: 22px; max-width: 38ch; }
-  .qb { background: var(--soft); border: 0.5px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 32px; }
-  .qb-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-  .qb-sub { font-size: 12px; color: var(--dim); margin-bottom: 14px; }
-  .nets { display: flex; gap: 8px; margin-bottom: 12px; }
-  .net { flex: 1; border-radius: 12px; padding: 11px 4px; text-align: center; border: 1.5px solid var(--border); background: #fff; cursor: pointer; }
-  .net.active { background: var(--text); border-color: var(--text); }
-  .net-dot { width: 22px; height: 22px; border-radius: 50%; margin: 0 auto 6px; }
-  .net p { font-size: 11px; font-weight: 700; }
-  .net.active p { color: #fff; }
-  .bundles { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
-  .bundle { display: flex; justify-content: space-between; align-items: center; border-radius: 11px; padding: 12px 14px; border: 1.5px solid var(--border); background: #fff; cursor: pointer; font-size: 13px; }
-  .bundle.active { background: #FFF8E8; border-color: var(--yellow); }
-  .note { font-size: 13px; color: var(--dim); padding: 6px 2px; }
-  .field { margin-bottom: 12px; }
-  .field label { display: block; font-size: 12px; font-weight: 600; color: var(--dim); margin-bottom: 6px; }
-  .field input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: #fff; font-size: 15px; font-family: inherit; }
-  .buy { width: 100%; padding: 14px; border-radius: 11px; border: none; background: var(--yellow); color: var(--text); font-family: inherit; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 4px; }
-  .buy:disabled { opacity: 0.5; }
-  .status { text-align: center; font-size: 13px; color: var(--dim); margin-top: 12px; min-height: 18px; }
-  .status.ok { color: var(--green); font-weight: 600; }
-  .status.err { color: #C0392B; }
-  .section-title { font-size: 12px; font-weight: 600; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
-  .steps { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
-  .step { display: flex; gap: 12px; align-items: flex-start; }
-  .step-num { width: 26px; height: 26px; border-radius: 8px; background: var(--text); color: var(--yellow); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .step p { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-  .step span { font-size: 12px; color: var(--dim); }
-  .services { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
-  .service { display: flex; align-items: center; justify-content: space-between; padding: 13px 14px; border-radius: 12px; border: 0.5px solid var(--border); }
-  .service-left { display: flex; align-items: center; gap: 12px; }
-  .icon { width: 34px; height: 34px; border-radius: 9px; background: var(--blue-soft); color: var(--blue); font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; }
-  .service p { font-size: 13px; font-weight: 600; }
-  .service span { font-size: 11px; color: var(--dim); }
-  .tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; padding: 3px 8px; border-radius: 999px; background: var(--soft); border: 0.5px solid var(--border); color: var(--dim); }
-  .tag.live { background: #E8F5EC; border-color: #E8F5EC; color: var(--green); }
-  .trust { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 32px; }
-  .trust div { padding: 14px; border-radius: 12px; border: 0.5px solid var(--border); }
-  .trust p { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
-  .trust span { font-size: 11px; color: var(--dim); line-height: 1.5; }
-  footer { border-top: 0.5px solid var(--border); padding: 22px 0 40px; text-align: center; font-size: 11px; color: var(--dim); }
-  footer a { color: #ddd; text-decoration: none; }
+  .logo { width: 30px; height: 30px; border-radius: 9px; background: var(--ink); color: var(--yellow); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; }
+  .brand-name { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .hero { padding: 22px 0 20px; }
+  .kicker { font-size: 11px; letter-spacing: 0.1em; color: var(--gold-text); font-weight: 600; margin-bottom: 10px; }
+  h1 { font-size: 28px; line-height: 1.18; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .sub { font-size: 14px; line-height: 1.65; color: var(--dim); max-width: 36ch; }
+
+  .buy-card { background: var(--card); border-radius: 20px; padding: 16px; margin-bottom: 26px; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+  .tab { flex: 1; text-align: center; padding: 10px 0; border-radius: 10px; background: var(--card2); color: #B9B9B2; font-size: 12.5px; font-weight: 500; cursor: pointer; }
+  .tab.active { background: var(--yellow); color: var(--ink); font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-bottom: 14px; }
+  .b { border: 1px solid var(--card-line); border-radius: 13px; padding: 12px 13px; cursor: pointer; }
+  .b.active { border: 1.5px solid var(--yellow); background: #201D10; padding: 11.5px 12.5px; }
+  .b .size { font-size: 19px; font-weight: 600; color: #fff; letter-spacing: -0.01em; }
+  .b .val { font-size: 11px; color: var(--card-dim); margin-top: 1px; }
+  .b .price { font-size: 13px; font-weight: 600; color: var(--yellow); margin-top: 6px; }
+  .msg { color: var(--card-dim); font-size: 13px; padding: 6px 2px 14px; grid-column: 1 / -1; }
+  .input { width: 100%; background: var(--card2); border: 1px solid transparent; border-radius: 11px; padding: 13px; color: #fff; font-size: 15px; font-family: inherit; margin-bottom: 9px; }
+  .input::placeholder { color: var(--card-dim); }
+  .input:focus { outline: none; border-color: var(--yellow); }
+  .pay { width: 100%; background: var(--yellow); color: var(--ink); border: none; border-radius: 12px; padding: 15px; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 4px; }
+  .pay:disabled { opacity: 0.55; }
+  .status { text-align: center; font-size: 13px; color: var(--card-dim); margin-top: 12px; min-height: 18px; }
+  .status.ok { color: #6FDC98; font-weight: 600; }
+  .status.err { color: #FF9C8F; }
+
+  .perks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; margin-bottom: 34px; }
+  .perk { display: flex; align-items: center; gap: 9px; font-size: 12.5px; }
+  .ico { width: 32px; height: 32px; border-radius: 9px; background: var(--gold-bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .ico svg { width: 17px; height: 17px; stroke: #8A6300; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  .label { font-size: 11px; letter-spacing: 0.08em; color: var(--dim); font-weight: 600; margin-bottom: 14px; }
+  .steps { margin-bottom: 34px; }
+  .step { display: flex; gap: 13px; padding-bottom: 18px; position: relative; }
+  .step:not(:last-child)::before { content: ''; position: absolute; left: 13px; top: 30px; bottom: 2px; width: 1px; background: var(--border); }
+  .num { width: 27px; height: 27px; border-radius: 50%; background: var(--ink); color: var(--yellow); font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step p { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .step span { font-size: 12.5px; color: var(--dim); line-height: 1.5; }
+
+  .svc { margin-bottom: 34px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .row { display: flex; align-items: center; justify-content: space-between; padding: 14px 15px; }
+  .row + .row { border-top: 1px solid var(--border); }
+  .row p { font-size: 13.5px; font-weight: 600; }
+  .row span.s { font-size: 11.5px; color: var(--dim); }
+  .tag { font-size: 10px; font-weight: 600; padding: 4px 9px; border-radius: 999px; background: var(--soft); color: var(--dim); }
+  .tag.on { background: #E8F5EC; color: var(--green); }
+
+  footer { border-top: 1px solid var(--border); padding: 22px 0 40px; text-align: center; font-size: 12px; color: var(--dim); line-height: 1.7; }
+  footer a { color: #e2e2e2; text-decoration: none; }
 </style>
 </head>
 <body>
-<header><div class="wrap"><div class="brand"><div class="logo">D</div><span class="brand-name">Data Deals</span></div></div></header>
-
 <div class="wrap">
+  <header><div class="brand"><div class="logo">D</div><span class="brand-name">Data Deals</span></div></header>
+
   <section class="hero">
-    <span class="eyebrow">All networks, one place</span>
-    <h1>Never run out of data again</h1>
-    <p class="sub">Pick your network, pick a bundle, pay securely. We send the data straight to the number you enter. Built for Ghana, run by Ghanaians.</p>
-
-    <div class="qb">
-      <p class="qb-title">Quick buy</p>
-      <p class="qb-sub">Tap a network, pick a bundle, done.</p>
-      <div class="nets" id="netRow"></div>
-      <div class="bundles" id="bundleList"><p class="note">Loading bundles...</p></div>
-      <div class="field"><label>Your phone number (for payment receipt)</label><input type="tel" id="customerPhone" placeholder="024 000 0000" maxlength="10"></div>
-      <div class="field"><label>Number to receive the data</label><input type="tel" id="recipientPhone" placeholder="024 000 0000" maxlength="10"></div>
-      <button class="buy" id="payBtn" disabled>Select a bundle</button>
-      <p class="status" id="statusMsg"></p>
-    </div>
-
-    <p class="section-title">How it works</p>
-    <div class="steps">
-      <div class="step"><div class="step-num">1</div><div><p>Choose network and bundle</p><span>MTN, AirtelTigo or Telecel. Pick what fits your budget.</span></div></div>
-      <div class="step"><div class="step-num">2</div><div><p>Pay securely</p><span>Card or Mobile Money, handled by Paystack.</span></div></div>
-      <div class="step"><div class="step-num">3</div><div><p>We send your data</p><span>It goes straight to the number you entered.</span></div></div>
-    </div>
-
-    <p class="section-title">What we offer</p>
-    <div class="services">
-      <div class="service"><div class="service-left"><div class="icon">D</div><div><p>Data bundles</p><span>MTN, AirtelTigo, Telecel</span></div></div><span class="tag live">Available</span></div>
-      <div class="service"><div class="service-left"><div class="icon">A</div><div><p>Airtime top-up</p><span>All networks</span></div></div><span class="tag">Soon</span></div>
-      <div class="service"><div class="service-left"><div class="icon">E</div><div><p>ECG prepaid units</p><span>Electricity top-up</span></div></div><span class="tag">Soon</span></div>
-      <div class="service"><div class="service-left"><div class="icon">T</div><div><p>TV subscriptions</p><span>DStv, GOtv</span></div></div><span class="tag">Soon</span></div>
-      <div class="service"><div class="service-left"><div class="icon">G</div><div><p>Gift cards</p><span>Popular brands</span></div></div><span class="tag">Soon</span></div>
-    </div>
-
-    <p class="section-title">Why Data Deals</p>
-    <div class="trust">
-      <div><p>Real people</p><span>Run by Adonle and Ben, not a faceless company.</span></div>
-      <div><p>Secure payment</p><span>Card and Mobile Money through Paystack.</span></div>
-      <div><p>All 3 networks</p><span>One place, no switching apps.</span></div>
-      <div><p>Clear prices</p><span>You see the price before you pay.</span></div>
-    </div>
+    <p class="kicker">MTN · AIRTELTIGO · TELECEL</p>
+    <h1>Data, sorted in seconds.</h1>
+    <p class="sub">Choose a bundle, pay securely, and we send it straight to the number you enter.</p>
   </section>
+
+  <div class="buy-card">
+    <div class="tabs" id="tabs"></div>
+    <div class="grid" id="grid"><p class="msg">Loading bundles...</p></div>
+    <input class="input" type="tel" id="customerPhone" placeholder="Your number (for the receipt)" maxlength="10">
+    <input class="input" type="tel" id="recipientPhone" placeholder="Number to receive the data" maxlength="10">
+    <button class="pay" id="payBtn" disabled>Choose a bundle</button>
+    <p class="status" id="status"></p>
+  </div>
+
+  <div class="perks">
+    <div class="perk"><div class="ico"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>Secure payment</div>
+    <div class="perk"><div class="ico"><svg viewBox="0 0 24 24"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></svg></div>Sent to your number</div>
+    <div class="perk"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>All 3 networks</div>
+    <div class="perk"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>Clear prices</div>
+  </div>
+
+  <p class="label">HOW IT WORKS</p>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><div><p>Pick your bundle</p><span>Choose the network and the size that fits your budget.</span></div></div>
+    <div class="step"><div class="num">2</div><div><p>Pay with card or MoMo</p><span>Payment is handled securely by Paystack.</span></div></div>
+    <div class="step"><div class="num">3</div><div><p>We send your data</p><span>It goes straight to the number you entered.</span></div></div>
+  </div>
+
+  <p class="label">WHAT WE OFFER</p>
+  <div class="svc">
+    <div class="row"><div><p>Data bundles</p><span class="s">MTN, AirtelTigo, Telecel</span></div><span class="tag on">Available</span></div>
+    <div class="row"><div><p>Airtime top-up</p><span class="s">All networks</span></div><span class="tag">Soon</span></div>
+    <div class="row"><div><p>ECG prepaid units</p><span class="s">Electricity top-up</span></div><span class="tag">Soon</span></div>
+    <div class="row"><div><p>TV subscriptions</p><span class="s">DStv, GOtv</span></div><span class="tag">Soon</span></div>
+    <div class="row"><div><p>Gift cards</p><span class="s">Popular brands</span></div><span class="tag">Soon</span></div>
+  </div>
+
+  <footer>
+    <p>Data Deals, data made simple across Ghana.</p>
+    <p>Founded by Adonle Fameye &amp; Ben K</p>
+    <p style="margin-top:12px"><a href="admin.html">·</a></p>
+  </footer>
 </div>
 
-<footer>
-  <div class="wrap">
-    <p>Data Deals, data made simple across Ghana.</p>
-    <p style="margin-top:6px">Founded by Adonle Fameye &amp; Ben K</p>
-    <p style="margin-top:14px"><a href="admin.html">·</a></p>
-  </div>
-</footer>
-
 <script>
-  const API = 'https://data-deals-backend.onrender.com';
-  const PAYSTACK_KEY = 'pk_live_d0c432c38f2b6df43bff7c329202633502c992c3';
-  const REF = new URLSearchParams(location.search).get('ref') || '';
-  const colors = { MTN: '#F5B400', AirtelTigo: '#2E6BE6', Telecel: '#3FA65A' };
-  let services = [], net = null, chosen = null;
+  var API = 'https://data-deals-backend.onrender.com';
+  var PAYSTACK_KEY = 'pk_live_d0c432c38f2b6df43bff7c329202633502c992c3';
+  var REF = new URLSearchParams(location.search).get('ref') || '';
+  var services = [], net = null, chosen = null;
 
-  async function loadServices(attempt) {
+  function load(attempt) {
     attempt = attempt || 1;
-    const list = document.getElementById('bundleList');
-    if (attempt > 1) list.innerHTML = '<p class="note">Waking things up, one moment...</p>';
-    try {
-      const res = await fetch(API + '/api/services?category=data');
-      if (!res.ok) throw new Error('bad');
-      services = await res.json();
-      drawNets();
-    } catch (e) {
-      if (attempt < 6) setTimeout(function(){ loadServices(attempt + 1); }, 6000);
-      else list.innerHTML = '<p class="note" style="color:#C0392B">Could not load bundles. Please refresh the page.</p>';
-    }
+    if (attempt > 1) document.getElementById('grid').innerHTML = '<p class="msg">Waking things up, one moment...</p>';
+    fetch(API + '/api/services?category=data')
+      .then(function(r){ if (!r.ok) throw new Error('bad'); return r.json(); })
+      .then(function(d){ services = d; drawTabs(); })
+      .catch(function(){
+        if (attempt < 6) setTimeout(function(){ load(attempt + 1); }, 6000);
+        else document.getElementById('grid').innerHTML = '<p class="msg">Could not load bundles. Please refresh the page.</p>';
+      });
   }
 
-  function drawNets() {
-    const nets = [...new Set(services.map(function(s){ return s.network; }))];
+  function drawTabs() {
+    var nets = services.map(function(s){ return s.network; }).filter(function(v, i, a){ return a.indexOf(v) === i; });
     if (!net && nets.length) net = nets[0];
-    const row = document.getElementById('netRow');
-    row.innerHTML = '';
-    nets.forEach(function(n) {
-      const el = document.createElement('div');
-      el.className = 'net' + (n === net ? ' active' : '');
-      el.innerHTML = '<div class="net-dot" style="background:' + (colors[n] || '#999') + '"></div><p>' + n + '</p>';
-      el.onclick = function(){ net = n; chosen = null; drawNets(); updateBtn(); };
-      row.appendChild(el);
+    var t = document.getElementById('tabs');
+    t.innerHTML = '';
+    nets.forEach(function(n){
+      var el = document.createElement('div');
+      el.className = 'tab' + (n === net ? ' active' : '');
+      el.textContent = n;
+      el.onclick = function(){ net = n; chosen = null; drawTabs(); btn(); };
+      t.appendChild(el);
     });
-    drawBundles();
+    drawGrid();
   }
 
-  function drawBundles() {
-    const list = document.getElementById('bundleList');
-    list.innerHTML = '';
-    services.filter(function(s){ return s.network === net; }).forEach(function(s) {
-      const el = document.createElement('div');
-      el.className = 'bundle' + (chosen && chosen.id === s.id ? ' active' : '');
-      el.innerHTML = '<span>' + s.name + '</span><strong>GHS ' + Number(s.price).toFixed(2) + '</strong>';
-      el.onclick = function(){ chosen = s; drawBundles(); updateBtn(); };
-      list.appendChild(el);
+  function drawGrid() {
+    var g = document.getElementById('grid');
+    g.innerHTML = '';
+    services.filter(function(s){ return s.network === net; }).forEach(function(s){
+      var parts = s.name.split(' - ');
+      var el = document.createElement('div');
+      el.className = 'b' + (chosen && chosen.id === s.id ? ' active' : '');
+      el.innerHTML = '<div class="size">' + parts[0] + '</div><div class="val">' + (parts[1] || '') + '</div><div class="price">GHS ' + Number(s.price).toFixed(2) + '</div>';
+      el.onclick = function(){ chosen = s; drawGrid(); btn(); };
+      g.appendChild(el);
     });
   }
 
-  function updateBtn() {
-    const b = document.getElementById('payBtn');
+  function btn() {
+    var b = document.getElementById('payBtn');
     b.disabled = !chosen;
-    b.textContent = chosen ? 'Pay GHS ' + Number(chosen.price).toFixed(2) : 'Select a bundle';
+    b.textContent = chosen ? 'Pay GHS ' + Number(chosen.price).toFixed(2) : 'Choose a bundle';
   }
 
-  function say(msg, cls) {
-    const s = document.getElementById('statusMsg');
-    s.textContent = msg; s.className = 'status ' + (cls || '');
-  }
+  function say(m, c) { var s = document.getElementById('status'); s.textContent = m; s.className = 'status ' + (c || ''); }
 
-  document.getElementById('payBtn').addEventListener('click', async function() {
-    const cp = document.getElementById('customerPhone').value.trim();
-    const rp = document.getElementById('recipientPhone').value.trim();
+  document.getElementById('payBtn').addEventListener('click', function() {
+    var cp = document.getElementById('customerPhone').value.trim();
+    var rp = document.getElementById('recipientPhone').value.trim();
     if (!/^0\d{9}$/.test(cp) || !/^0\d{9}$/.test(rp)) { say('Enter valid 10-digit phone numbers.', 'err'); return; }
     say('Creating your order...');
-    try {
-      const r = await fetch(API + '/api/orders', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customer_phone: cp, service_id: chosen.id, recipient_phone: rp, referral_code: REF || undefined })
-      });
-      const d = await r.json();
-      if (!r.ok) throw new Error(d.error || 'Order failed');
+    fetch(API + '/api/orders', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ customer_phone: cp, service_id: chosen.id, recipient_phone: rp, referral_code: REF || undefined })
+    })
+    .then(function(r){ return r.json().then(function(d){ if (!r.ok) throw new Error(d.error || 'Order failed'); return d; }); })
+    .then(function(d){
       PaystackPop.setup({
         key: PAYSTACK_KEY, email: cp + '@datadeals.customer',
         amount: Math.round(Number(d.amount) * 100), ref: d.reference, currency: 'GHS',
-        callback: function() {
-          say('Payment received. Your data is on the way.', 'ok');
-          fetch(API + '/api/orders/verify/' + d.reference).catch(function(){});
-        },
-        onClose: function() { say('Payment window closed.'); }
+        callback: function(){ say('Payment received. Your data is on the way.', 'ok'); fetch(API + '/api/orders/verify/' + d.reference).catch(function(){}); },
+        onClose: function(){ say('Payment window closed.'); }
       }).openIframe();
       say('');
-    } catch (e) { say('Something went wrong: ' + e.message, 'err'); }
+    })
+    .catch(function(e){ say('Something went wrong: ' + e.message, 'err'); });
   });
 
-  loadServices();
+  load();
 </script>
 </body>
   </html>
