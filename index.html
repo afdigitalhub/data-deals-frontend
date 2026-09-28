@@ -9,155 +9,200 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <style>
-  :root {
-    --bg: #FFFFFF; --bg-soft: #F8F8F6; --yellow: #F5B400; --blue: #2E6BE6; --blue-soft: #EAF0FE;
-    --text: #14140F; --text-dim: #6B6B66; --border: #E7E5DD;
-  }
+  :root { --bg:#FFFFFF; --soft:#F8F8F6; --yellow:#F5B400; --blue:#2E6BE6; --blue-soft:#EAF0FE; --text:#14140F; --dim:#6B6B66; --border:#E7E5DD; --green:#2E8B4F; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; }
-  .wrap { max-width: 480px; margin: 0 auto; padding: 20px; }
-  header { display: flex; align-items: center; gap: 9px; padding-bottom: 20px; border-bottom: 0.5px solid var(--border); margin-bottom: 20px; }
-  .logo { width: 32px; height: 32px; border-radius: 9px; background: var(--text); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; color: var(--yellow); }
+  body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 0 20px; }
+  header { position: sticky; top: 0; background: rgba(255,255,255,0.94); backdrop-filter: blur(8px); border-bottom: 0.5px solid var(--border); padding: 14px 0; z-index: 10; }
+  .brand { display: flex; align-items: center; gap: 9px; }
+  .logo { width: 32px; height: 32px; border-radius: 9px; background: var(--text); color: var(--yellow); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; }
   .brand-name { font-size: 16px; font-weight: 600; }
-  h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-  .sub { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
-  .qb-card { background: var(--bg-soft); border: 0.5px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 20px; }
-  .qb-nets { display: flex; gap: 8px; margin-bottom: 12px; }
-  .qb-net { flex: 1; border-radius: 12px; padding: 11px 4px; text-align: center; border: 1.5px solid var(--border); background: #fff; cursor: pointer; }
-  .qb-net.active { background: var(--text); border-color: var(--text); }
-  .qb-net-dot { width: 22px; height: 22px; border-radius: 50%; margin: 0 auto 6px; }
-  .qb-net p { font-size: 11px; font-weight: 700; color: var(--text); }
-  .qb-net.active p { color: #fff; }
-  .qb-bundles { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
-  .qb-bundle { display: flex; justify-content: space-between; border-radius: 11px; padding: 12px 14px; border: 1.5px solid var(--border); background: #fff; cursor: pointer; }
-  .qb-bundle.active { background: #FFF8E8; border-color: var(--yellow); }
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-dim); margin-bottom: 6px; }
+  .hero { padding: 24px 0 8px; }
+  .eyebrow { display: inline-block; font-size: 11px; font-weight: 600; color: var(--blue); background: var(--blue-soft); padding: 5px 11px; border-radius: 999px; margin-bottom: 14px; }
+  h1 { font-size: 24px; font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; margin-bottom: 10px; }
+  .sub { font-size: 14px; color: var(--dim); line-height: 1.6; margin-bottom: 22px; max-width: 38ch; }
+  .qb { background: var(--soft); border: 0.5px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 32px; }
+  .qb-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .qb-sub { font-size: 12px; color: var(--dim); margin-bottom: 14px; }
+  .nets { display: flex; gap: 8px; margin-bottom: 12px; }
+  .net { flex: 1; border-radius: 12px; padding: 11px 4px; text-align: center; border: 1.5px solid var(--border); background: #fff; cursor: pointer; }
+  .net.active { background: var(--text); border-color: var(--text); }
+  .net-dot { width: 22px; height: 22px; border-radius: 50%; margin: 0 auto 6px; }
+  .net p { font-size: 11px; font-weight: 700; }
+  .net.active p { color: #fff; }
+  .bundles { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .bundle { display: flex; justify-content: space-between; align-items: center; border-radius: 11px; padding: 12px 14px; border: 1.5px solid var(--border); background: #fff; cursor: pointer; font-size: 13px; }
+  .bundle.active { background: #FFF8E8; border-color: var(--yellow); }
+  .note { font-size: 13px; color: var(--dim); padding: 6px 2px; }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; color: var(--dim); margin-bottom: 6px; }
   .field input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: #fff; font-size: 15px; font-family: inherit; }
-  .qb-buy { width: 100%; padding: 14px; border-radius: 11px; border: none; background: var(--yellow); color: var(--text); font-weight: 700; font-size: 15px; cursor: pointer; }
-  .qb-buy:disabled { opacity: 0.5; }
-  .status { text-align: center; font-size: 13px; color: var(--text-dim); margin-top: 12px; }
-  .status.success { color: #2E8B4F; font-weight: 600; }
-  .admin-link { text-align: center; margin-top: 30px; }
-  .admin-link a { font-size: 10px; color: #ccc; text-decoration: none; }
+  .buy { width: 100%; padding: 14px; border-radius: 11px; border: none; background: var(--yellow); color: var(--text); font-family: inherit; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 4px; }
+  .buy:disabled { opacity: 0.5; }
+  .status { text-align: center; font-size: 13px; color: var(--dim); margin-top: 12px; min-height: 18px; }
+  .status.ok { color: var(--green); font-weight: 600; }
+  .status.err { color: #C0392B; }
+  .section-title { font-size: 12px; font-weight: 600; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+  .steps { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+  .step { display: flex; gap: 12px; align-items: flex-start; }
+  .step-num { width: 26px; height: 26px; border-radius: 8px; background: var(--text); color: var(--yellow); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step p { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .step span { font-size: 12px; color: var(--dim); }
+  .services { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+  .service { display: flex; align-items: center; justify-content: space-between; padding: 13px 14px; border-radius: 12px; border: 0.5px solid var(--border); }
+  .service-left { display: flex; align-items: center; gap: 12px; }
+  .icon { width: 34px; height: 34px; border-radius: 9px; background: var(--blue-soft); color: var(--blue); font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+  .service p { font-size: 13px; font-weight: 600; }
+  .service span { font-size: 11px; color: var(--dim); }
+  .tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; padding: 3px 8px; border-radius: 999px; background: var(--soft); border: 0.5px solid var(--border); color: var(--dim); }
+  .tag.live { background: #E8F5EC; border-color: #E8F5EC; color: var(--green); }
+  .trust { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 32px; }
+  .trust div { padding: 14px; border-radius: 12px; border: 0.5px solid var(--border); }
+  .trust p { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+  .trust span { font-size: 11px; color: var(--dim); line-height: 1.5; }
+  footer { border-top: 0.5px solid var(--border); padding: 22px 0 40px; text-align: center; font-size: 11px; color: var(--dim); }
+  footer a { color: #ddd; text-decoration: none; }
 </style>
 </head>
 <body>
+<header><div class="wrap"><div class="brand"><div class="logo">D</div><span class="brand-name">Data Deals</span></div></div></header>
+
 <div class="wrap">
-  <header>
-    <div class="logo">D</div>
-    <span class="brand-name">Data Deals</span>
-  </header>
-  <h1>Never run out of data again</h1>
-  <p class="sub">Pick your network, pick a bundle, pay — your data lands in minutes.</p>
-  <div class="qb-card">
-    <div class="qb-nets" id="netRow"></div>
-    <div class="qb-bundles" id="bundleList"><p style="font-size:13px;color:var(--text-dim)">Loading bundles...</p></div>
-    <div class="field">
-      <label>Your phone number (for payment receipt)</label>
-      <input type="tel" id="customerPhone" placeholder="024 000 0000">
+  <section class="hero">
+    <span class="eyebrow">All networks, one place</span>
+    <h1>Never run out of data again</h1>
+    <p class="sub">Pick your network, pick a bundle, pay securely. We send the data straight to the number you enter. Built for Ghana, run by Ghanaians.</p>
+
+    <div class="qb">
+      <p class="qb-title">Quick buy</p>
+      <p class="qb-sub">Tap a network, pick a bundle, done.</p>
+      <div class="nets" id="netRow"></div>
+      <div class="bundles" id="bundleList"><p class="note">Loading bundles...</p></div>
+      <div class="field"><label>Your phone number (for payment receipt)</label><input type="tel" id="customerPhone" placeholder="024 000 0000" maxlength="10"></div>
+      <div class="field"><label>Number to receive the data</label><input type="tel" id="recipientPhone" placeholder="024 000 0000" maxlength="10"></div>
+      <button class="buy" id="payBtn" disabled>Select a bundle</button>
+      <p class="status" id="statusMsg"></p>
     </div>
-    <div class="field">
-      <label>Number to receive the data</label>
-      <input type="tel" id="recipientPhone" placeholder="024 000 0000">
+
+    <p class="section-title">How it works</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div><p>Choose network and bundle</p><span>MTN, AirtelTigo or Telecel. Pick what fits your budget.</span></div></div>
+      <div class="step"><div class="step-num">2</div><div><p>Pay securely</p><span>Card or Mobile Money, handled by Paystack.</span></div></div>
+      <div class="step"><div class="step-num">3</div><div><p>We send your data</p><span>It goes straight to the number you entered.</span></div></div>
     </div>
-    <button class="qb-buy" id="payBtn" disabled>Select a bundle</button>
-    <p class="status" id="statusMsg"></p>
-  </div>
-  <p class="admin-link"><a href="admin.html">·</a></p>
+
+    <p class="section-title">What we offer</p>
+    <div class="services">
+      <div class="service"><div class="service-left"><div class="icon">D</div><div><p>Data bundles</p><span>MTN, AirtelTigo, Telecel</span></div></div><span class="tag live">Available</span></div>
+      <div class="service"><div class="service-left"><div class="icon">A</div><div><p>Airtime top-up</p><span>All networks</span></div></div><span class="tag">Soon</span></div>
+      <div class="service"><div class="service-left"><div class="icon">E</div><div><p>ECG prepaid units</p><span>Electricity top-up</span></div></div><span class="tag">Soon</span></div>
+      <div class="service"><div class="service-left"><div class="icon">T</div><div><p>TV subscriptions</p><span>DStv, GOtv</span></div></div><span class="tag">Soon</span></div>
+      <div class="service"><div class="service-left"><div class="icon">G</div><div><p>Gift cards</p><span>Popular brands</span></div></div><span class="tag">Soon</span></div>
+    </div>
+
+    <p class="section-title">Why Data Deals</p>
+    <div class="trust">
+      <div><p>Real people</p><span>Run by Adonle and Ben, not a faceless company.</span></div>
+      <div><p>Secure payment</p><span>Card and Mobile Money through Paystack.</span></div>
+      <div><p>All 3 networks</p><span>One place, no switching apps.</span></div>
+      <div><p>Clear prices</p><span>You see the price before you pay.</span></div>
+    </div>
+  </section>
 </div>
+
+<footer>
+  <div class="wrap">
+    <p>Data Deals, data made simple across Ghana.</p>
+    <p style="margin-top:6px">Founded by Adonle Fameye &amp; Ben K</p>
+    <p style="margin-top:14px"><a href="admin.html">·</a></p>
+  </div>
+</footer>
+
 <script>
   const API = 'https://data-deals-backend.onrender.com';
   const PAYSTACK_KEY = 'pk_live_d0c432c38f2b6df43bff7c329202633502c992c3';
-  let services = [];
-  let selectedNetwork = null;
-  let selectedService = null;
-  const netColors = { MTN: '#F5B400', AirtelTigo: '#2E6BE6', Telecel: '#3FA65A' };
-  async function loadServices() {
+  const REF = new URLSearchParams(location.search).get('ref') || '';
+  const colors = { MTN: '#F5B400', AirtelTigo: '#2E6BE6', Telecel: '#3FA65A' };
+  let services = [], net = null, chosen = null;
+
+  async function loadServices(attempt) {
+    attempt = attempt || 1;
+    const list = document.getElementById('bundleList');
+    if (attempt > 1) list.innerHTML = '<p class="note">Waking things up, one moment...</p>';
     try {
       const res = await fetch(API + '/api/services?category=data');
+      if (!res.ok) throw new Error('bad');
       services = await res.json();
-      renderNetworks();
+      drawNets();
     } catch (e) {
-      document.getElementById('bundleList').innerHTML = '<p style="color:#c0392b;font-size:13px">Could not load bundles. Refresh the page.</p>';
+      if (attempt < 6) setTimeout(function(){ loadServices(attempt + 1); }, 6000);
+      else list.innerHTML = '<p class="note" style="color:#C0392B">Could not load bundles. Please refresh the page.</p>';
     }
   }
-  function renderNetworks() {
-    const networks = [...new Set(services.map(s => s.network))];
+
+  function drawNets() {
+    const nets = [...new Set(services.map(function(s){ return s.network; }))];
+    if (!net && nets.length) net = nets[0];
     const row = document.getElementById('netRow');
     row.innerHTML = '';
-    networks.forEach(net => {
+    nets.forEach(function(n) {
       const el = document.createElement('div');
-      el.className = 'qb-net';
-      el.innerHTML = `<div class="qb-net-dot" style="background:${netColors[net] || '#999'}"></div><p>${net}</p>`;
-      el.onclick = () => { selectedNetwork = net; selectedService = null; renderNetworks(); renderBundles(); updateBtn(); };
-      if (selectedNetwork === net) el.classList.add('active');
+      el.className = 'net' + (n === net ? ' active' : '');
+      el.innerHTML = '<div class="net-dot" style="background:' + (colors[n] || '#999') + '"></div><p>' + n + '</p>';
+      el.onclick = function(){ net = n; chosen = null; drawNets(); updateBtn(); };
       row.appendChild(el);
     });
-    if (!selectedNetwork && networks.length) { selectedNetwork = networks[0]; renderNetworks(); }
-    renderBundles();
+    drawBundles();
   }
-  function renderBundles() {
+
+  function drawBundles() {
     const list = document.getElementById('bundleList');
     list.innerHTML = '';
-    services.filter(s => s.network === selectedNetwork).forEach(s => {
+    services.filter(function(s){ return s.network === net; }).forEach(function(s) {
       const el = document.createElement('div');
-      el.className = 'qb-bundle';
-      el.innerHTML = `<span>${s.name}</span><strong>GHS ${s.price}</strong>`;
-      el.onclick = () => { selectedService = s; renderBundles(); updateBtn(); };
-      if (selectedService && selectedService.id === s.id) el.classList.add('active');
+      el.className = 'bundle' + (chosen && chosen.id === s.id ? ' active' : '');
+      el.innerHTML = '<span>' + s.name + '</span><strong>GHS ' + Number(s.price).toFixed(2) + '</strong>';
+      el.onclick = function(){ chosen = s; drawBundles(); updateBtn(); };
       list.appendChild(el);
     });
   }
+
   function updateBtn() {
-    const btn = document.getElementById('payBtn');
-    btn.disabled = !selectedService;
-    btn.textContent = selectedService ? `Pay GHS ${selectedService.price}` : 'Select a bundle';
+    const b = document.getElementById('payBtn');
+    b.disabled = !chosen;
+    b.textContent = chosen ? 'Pay GHS ' + Number(chosen.price).toFixed(2) : 'Select a bundle';
   }
-  document.getElementById('payBtn').addEventListener('click', async () => {
-    const customerPhone = document.getElementById('customerPhone').value.trim();
-    const recipientPhone = document.getElementById('recipientPhone').value.trim();
-    const statusEl = document.getElementById('statusMsg');
-    if (!/^0\d{9}$/.test(customerPhone) || !/^0\d{9}$/.test(recipientPhone)) {
-      statusEl.textContent = 'Enter valid 10-digit phone numbers.';
-      statusEl.className = 'status';
-      return;
-    }
-    statusEl.textContent = 'Creating your order...';
+
+  function say(msg, cls) {
+    const s = document.getElementById('statusMsg');
+    s.textContent = msg; s.className = 'status ' + (cls || '');
+  }
+
+  document.getElementById('payBtn').addEventListener('click', async function() {
+    const cp = document.getElementById('customerPhone').value.trim();
+    const rp = document.getElementById('recipientPhone').value.trim();
+    if (!/^0\d{9}$/.test(cp) || !/^0\d{9}$/.test(rp)) { say('Enter valid 10-digit phone numbers.', 'err'); return; }
+    say('Creating your order...');
     try {
-      const orderRes = await fetch(API + '/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customer_phone: customerPhone,
-          service_id: selectedService.id,
-          recipient_phone: recipientPhone
-        })
+      const r = await fetch(API + '/api/orders', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customer_phone: cp, service_id: chosen.id, recipient_phone: rp, referral_code: REF || undefined })
       });
-      const orderData = await orderRes.json();
-      if (!orderRes.ok) throw new Error(orderData.error || 'Order failed');
-      const handler = PaystackPop.setup({
-        key: PAYSTACK_KEY,
-        email: customerPhone + '@dataDeals.customer',
-        amount: Math.round(orderData.amount * 100),
-        ref: orderData.reference,
-        currency: 'GHS',
-        callback: function(response) {
-          statusEl.textContent = 'Payment received! Your data is on the way.';
-          statusEl.className = 'status success';
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Order failed');
+      PaystackPop.setup({
+        key: PAYSTACK_KEY, email: cp + '@datadeals.customer',
+        amount: Math.round(Number(d.amount) * 100), ref: d.reference, currency: 'GHS',
+        callback: function() {
+          say('Payment received. Your data is on the way.', 'ok');
+          fetch(API + '/api/orders/verify/' + d.reference).catch(function(){});
         },
-        onClose: function() {
-          statusEl.textContent = 'Payment window closed.';
-          statusEl.className = 'status';
-        }
-      });
-      handler.openIframe();
-      statusEl.textContent = '';
-    } catch (e) {
-      statusEl.textContent = 'Something went wrong: ' + e.message;
-      statusEl.className = 'status';
-    }
+        onClose: function() { say('Payment window closed.'); }
+      }).openIframe();
+      say('');
+    } catch (e) { say('Something went wrong: ' + e.message, 'err'); }
   });
+
   loadServices();
 </script>
 </body>
